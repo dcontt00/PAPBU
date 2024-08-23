@@ -1,13 +1,13 @@
 import tkinter as tk
 from bs4 import BeautifulSoup
 
-class AsignarPlantilla():
 
-    ventana:tk.Toplevel
-    entry_collection_handle:tk.Entry
-    text_resultado:tk.Text
-    filename:str
-    selected_form_name:tk.StringVar
+class AsignarPlantilla():
+    ventana: tk.Toplevel
+    entry_collection_handle: tk.Entry
+    text_resultado: tk.Text
+    filename: str
+    selected_form_name: tk.StringVar
 
     def inicializar_ventana(self):
         self.ventana = tk.Toplevel()
@@ -40,15 +40,17 @@ class AsignarPlantilla():
 
         # Eliminar duplicados
         form_names = list(set(form_names))
+        form_names.sort()
 
         return form_names
+
     def asignar_plantilla(self):
         with open(self.filename, 'r', encoding='utf-8') as file:
             content = file.read()
 
         collection_handle = self.entry_collection_handle.get()
         print(collection_handle)
-        soup=BeautifulSoup(content, 'lxml-xml')
+        soup = BeautifulSoup(content, 'lxml-xml')
         form_map = soup.find('form-map')
 
         # Añadir un nuevo 'name-map' con el 'collection-handle' y 'form-name' especificados
@@ -66,5 +68,3 @@ class AsignarPlantilla():
             file.write(formatte_content)
         self.text_resultado.delete('1.0', tk.END)
         self.text_resultado.insert(tk.END, "Plantilla asignada correctamente.")
-
-
