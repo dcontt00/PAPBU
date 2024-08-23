@@ -2,12 +2,12 @@ import tkinter as tk
 from bs4 import BeautifulSoup
 from tkinter import ttk
 
-input_types = ["onebox", "name", "dropdown", "textarea"]
 input_types_dict = {
-    "onebox": "One Box",
-    "name": "Name",
-    "dropdown": "Dropdown",
-    "textarea": "Text Area"
+    "Campo de texto": "onebox",
+    "Nombre": "name",
+    "Desplegable": "dropdown",
+    "Área de Texto": "textarea",
+    "Fecha": "date",
 }
 
 
@@ -51,11 +51,24 @@ class CrearPlantilla():
         metadato = tk.Entry(top)
         metadato.grid(row=2, column=1)
 
+        # Dropdown tipo de campo
         tk.Label(top, text="Tipo de campo").grid(row=3, column=0)
         tipo_campo = tk.StringVar(top)
         tipo_campo.set(list(input_types_dict.keys())[0])
-        dropdown = tk.OptionMenu(top, tipo_campo, *input_types_dict.keys())
+        dropdown = tk.OptionMenu(top, tipo_campo, *input_types_dict.keys(),
+                                 command=lambda value: self.on_tipo_campo_change(value, top))
         dropdown.grid(row=3, column=1)
+
+        # Dropdown values
+        value_pairs_names = self.get_value_pairs_name_map()
+        label_value_pairs = tk.Label(top, text="Valores del desplegable")
+        label_value_pairs.grid(row=3, column=2)
+        value_pairs_name = tk.StringVar(top)
+        value_pairs_name.set(value_pairs_names[0])
+        dropdown_value_pairs = tk.OptionMenu(top, value_pairs_name, *value_pairs_names)
+        dropdown_value_pairs.grid(row=3, column=3)
+        label_value_pairs.grid_remove()  # Ocultar inicialmente
+        dropdown_value_pairs.grid_remove()  # Ocultar inicialmente
 
         tk.Label(top, text="Obligatorio").grid(row=4, column=0)
         obligatorio = tk.BooleanVar(top)
@@ -75,24 +88,34 @@ class CrearPlantilla():
             "texto": texto,
             "metadato": metadato,
             "tipo_campo": tipo_campo,
+            "value_pairs_name": value_pairs_name,
+            "label_value_pairs": label_value_pairs,
+            "dropdown_value_pairs": dropdown_value_pairs,
             "obligatorio": obligatorio,
             "repetible": repetible
         })
 
-    def obtener_valor_real(self):
-        valor_mostrado = self.tipo_campo.get()
-        valor_real = input_types_dict[valor_mostrado]
-        return valor_real
+    def on_tipo_campo_change(self, value: str, top: tk.Frame):
+        for campo in self.campos:
+            if campo["tipo_campo"].get() == value:
+                if value == "Desplegable":
+                    campo["label_value_pairs"].grid()
+                    campo["dropdown_value_pairs"].grid()
+                else:
+                    campo["label_value_pairs"].grid_remove()
+                    campo["dropdown_value_pairs"].grid_remove()
 
     def guardar(self):
         datos = []
         for campo in self.campos:
+            tipo_campo_clave = input_types_dict[campo["tipo_campo"].get()]
             datos.append({
                 "nombre": campo["nombre"].get(),
                 "texto": campo["texto"].get(),
                 "metadato": campo["metadato"].get(),
-                "tipo_campo": campo["tipo_campo"].get(),
+                "tipo_campo": tipo_campo_clave,
                 "obligatorio": campo["obligatorio"].get(),
+                "value_pairs_name": campo["value_pairs_name"].get(),
                 "repetible": campo["repetible"].get()
             })
 
@@ -141,6 +164,8 @@ class CrearPlantilla():
 
             input_type = soup.new_tag('input-type')
             input_type.string = x['tipo_campo']
+            if x['tipo_campo'] == 'dropdown':
+                input_type['value-pairs-name'] = x['value_pairs_name']
             field.append(input_type)
 
             hint = soup.new_tag('hint')
@@ -154,6 +179,22 @@ class CrearPlantilla():
             page.append(field)
 
         form_definitions.insert(0, form)
+        formatted_xml = soup.prettify()
 
         with open(self.filename, 'w', encoding='utf-8') as file:
-            file.write(str(soup))
+            file.write(formatted_xml)
+
+    def get_value_pairs_name_map(self):
+        with open(self.filename, 'r', encoding='utf-8') as file:
+            content = file.read()
+        soup = BeautifulSoup(content, 'lxml-xml')
+        input_types = soup.find_all('input-type')
+        print(input_types)
+        value_pairs_names = [name_map.get('value-pairs-name') for name_map in input_types if
+                             name_map.text == "dropdown"]
+
+        # Eliminar duplicados
+        value_pairs_names = list(set(value_pairs_names))
+        value_pairs_names.sort()
+
+        return value_pairs_names
