@@ -1,10 +1,10 @@
 import tkinter as tk
 from tkinter import filedialog
-from pathlib import Path
 import xml.etree.ElementTree as ET
 import buscar_plantilla
 import asignar_plantilla
 import crear_plantilla
+from tkinter import ttk
 
 root_element = None
 
@@ -28,9 +28,11 @@ def obtener_form_name_por_collection_handle(filename, collection_handle):
 def abrir_archivo():
     filename = filedialog.askopenfilename(filetypes=[("XML files", "*.xml")])
     if filename:
-        # Leer y parsear el contenido del archivo XML.
-        tree = ET.parse(filename)
-        root = tree.getroot()
+        entry.config(state=tk.NORMAL)
+        entry.delete(0, tk.END)
+        entry.insert(0, filename)
+        entry.config(state="readonly")
+
         # Mostrar los botones de opciones
         buscar_plantilla.pack()
         asignar_plantilla.pack()
@@ -48,12 +50,18 @@ asignar_plantilla_ventana = asignar_plantilla.AsignarPlantilla()
 crear_plantilla_ventana = crear_plantilla.CrearPlantilla()
 
 ventana.title("Abrir Archivo")
-ventana.geometry("300x200")
+ventana.geometry("600x600")
+
 tk.Label(ventana, text="Selecciona un archivo para abrirlo:").pack()
+
+# Filename entry
+entry = tk.Entry(ventana)
+entry.config(state="readonly")
+entry.pack(fill="x")
 
 # Crear un botón para abrir el archivo
 boton_abrir = tk.Button(ventana, text="Abrir Archivo", command=abrir_archivo)
-boton_abrir.pack()
+boton_abrir.pack(pady=20)
 
 # Crear tres botones adicionales y ocultarlos inicialmente
 buscar_plantilla = tk.Button(ventana, text="Buscar Plantilla", command=buscar_plantilla_ventana.inicializar_ventana)

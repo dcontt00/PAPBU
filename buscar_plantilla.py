@@ -1,15 +1,15 @@
 import tkinter as tk
 from bs4 import BeautifulSoup
+from tkinter import messagebox
+
 
 class BuscarPlantilla():
-    ventana:tk.Toplevel
-    filename:str
-    entry_collection_handle:tk.Entry
-    text_resultado:tk.Text
+    ventana: tk.Toplevel
+    filename: str
+    entry_collection_handle: tk.Entry
 
     def __init__(self):
         pass
-
 
     def inicializar_ventana(self):
         self.ventana = tk.Toplevel()
@@ -20,8 +20,6 @@ class BuscarPlantilla():
         self.entry_collection_handle.pack()
         boton_buscar = tk.Button(self.ventana, text="Buscar", command=self.buscar_plantilla)
         boton_buscar.pack()
-        self.text_resultado = tk.Text(self.ventana, height=10, width=50)
-        self.text_resultado.pack()
 
     def buscar_plantilla(self):
         with open(self.filename, 'r', encoding='utf-8') as file:
@@ -34,8 +32,9 @@ class BuscarPlantilla():
         name_map = soup.find('name-map', {'collection-handle': collection_handle})
 
         if name_map:
-            self.text_resultado.delete('1.0', tk.END)
-            self.text_resultado.insert(tk.END, name_map.get('form-name'))
+            messagebox.showinfo("Plantilla encontrada",
+                                f"La plantilla asociada al 'collection-handle' {collection_handle} es "
+                                f"{name_map.get('form-name')}")
         else:
-            self.text_resultado.delete('1.0', tk.END)
-            self.text_resultado.insert(tk.END, "No se encontró ninguna plantilla con el 'collection-handle' especificado.")
+            messagebox.showinfo("Plantilla no encontrada",
+                                f"No se encontró una plantilla asociada al 'collection-handle' {collection_handle}")

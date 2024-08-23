@@ -4,8 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="67970dcc-8b17-43f6-9aa2-696e5520b1b1" name="Changes" comment="Buscar plantilla implementado">
+    <list default="true" id="67970dcc-8b17-43f6-9aa2-696e5520b1b1" name="Changes" comment="Implementados valores del desplegable">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/asignar_plantilla.py" beforeDir="false" afterPath="$PROJECT_DIR$/asignar_plantilla.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/buscar_plantilla.py" beforeDir="false" afterPath="$PROJECT_DIR$/buscar_plantilla.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -18,6 +21,9 @@
         <option value="Python Script" />
       </list>
     </option>
+  </component>
+  <component name="FormatOnSaveOptions">
+    <option name="myRunOnSave" value="true" />
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -42,11 +48,13 @@
     "ignore.virus.scanning.warn.message": "true",
     "last_opened_file_path": "C:/Users/MICROSOFT/PycharmProjects/Plantillas Buleria/main.py",
     "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.stylelint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.stylelint": "",
     "node.js.selected.package.tslint": "(autodetect)",
     "nodejs_package_manager_path": "npm",
-    "settings.editor.selected.configurable": "preferences.pluginManager",
+    "settings.editor.selected.configurable": "actions.on.save",
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
@@ -93,7 +101,8 @@
       <option name="presentableId" value="Default" />
       <updated>1724400508374</updated>
       <workItem from="1724400509467" duration="494000" />
-      <workItem from="1724401019562" duration="3509000" />
+      <workItem from="1724401019562" duration="3825000" />
+      <workItem from="1724406269083" duration="6907000" />
     </task>
     <task id="LOCAL-00001" summary="Buscar plantilla implementado">
       <option name="closed" value="true" />
@@ -103,7 +112,39 @@
       <option name="project" value="LOCAL" />
       <updated>1724403800005</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="Buscar plantilla y asignar plantilla implementado">
+      <option name="closed" value="true" />
+      <created>1724404753215</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1724404753215</updated>
+    </task>
+    <task id="LOCAL-00003" summary="Ordenar form_names">
+      <option name="closed" value="true" />
+      <created>1724406545917</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1724406545917</updated>
+    </task>
+    <task id="LOCAL-00004" summary="Implementado crear plantillas">
+      <option name="closed" value="true" />
+      <created>1724410734401</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1724410734401</updated>
+    </task>
+    <task id="LOCAL-00005" summary="Implementados valores del desplegable">
+      <option name="closed" value="true" />
+      <created>1724412716995</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1724412716995</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -111,10 +152,14 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Buscar plantilla implementado" />
-    <option name="LAST_COMMIT_MESSAGE" value="Buscar plantilla implementado" />
+    <MESSAGE value="Buscar plantilla y asignar plantilla implementado" />
+    <MESSAGE value="Ordenar form_names" />
+    <MESSAGE value="Implementado crear plantillas" />
+    <MESSAGE value="Implementados valores del desplegable" />
+    <option name="LAST_COMMIT_MESSAGE" value="Implementados valores del desplegable" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
-    <SUITE FILE_PATH="coverage/Plantillas_Buleria$main.coverage" NAME="main Coverage Results" MODIFIED="1724404563320" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="" />
+    <SUITE FILE_PATH="coverage/Plantillas_Buleria$main.coverage" NAME="main Coverage Results" MODIFIED="1724413235309" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="" />
     <SUITE FILE_PATH="coverage/Plantillas_Buleria$buscar_plantilla.coverage" NAME="buscar_plantilla Coverage Results" MODIFIED="1724402343277" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
 </project>

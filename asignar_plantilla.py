@@ -1,11 +1,11 @@
 import tkinter as tk
 from bs4 import BeautifulSoup
+from tkinter import messagebox
 
 
 class AsignarPlantilla():
     ventana: tk.Toplevel
     entry_collection_handle: tk.Entry
-    text_resultado: tk.Text
     filename: str
     selected_form_name: tk.StringVar
 
@@ -27,8 +27,6 @@ class AsignarPlantilla():
 
         boton_asignar = tk.Button(self.ventana, text="Asignar", command=self.asignar_plantilla)
         boton_asignar.pack()
-        self.text_resultado = tk.Text(self.ventana, height=10, width=50)
-        self.text_resultado.pack()
 
     def get_form_names(self):
         # Parsear el archivo XML
@@ -66,5 +64,5 @@ class AsignarPlantilla():
         # Guardar los cambios en el archivo XML
         with open(self.filename, 'w', encoding='utf-8') as file:
             file.write(formatte_content)
-        self.text_resultado.delete('1.0', tk.END)
-        self.text_resultado.insert(tk.END, "Plantilla asignada correctamente.")
+        messagebox.showinfo("Plantilla asignada",
+                            f"Se ha asignado la plantilla {self.selected_form_name.get()} al 'collection-handle' {collection_handle}")
