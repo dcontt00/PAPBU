@@ -13,7 +13,7 @@ class BuscarPlantilla():
 
     def inicializar_ventana(self):
         self.ventana = tk.Toplevel()
-        self.ventana.title("Pantalla1")
+        self.ventana.title("Buscar plantilla")
         self.ventana.geometry("500x500")
         tk.Label(self.ventana, text="Introduce el handle de la colección de la que quieras saber su plantilla").pack()
         self.entry_collection_handle = tk.Entry(self.ventana)

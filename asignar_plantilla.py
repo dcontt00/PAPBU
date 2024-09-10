@@ -11,7 +11,7 @@ class AsignarPlantilla():
 
     def inicializar_ventana(self):
         self.ventana = tk.Toplevel()
-        self.ventana.title("Pantalla2")
+        self.ventana.title("Asignar Plantilla")
         self.ventana.geometry("500x500")
         tk.Label(self.ventana, text="Introduce el handle de la colección a la que quieras asignar la plantilla").pack()
         self.entry_collection_handle = tk.Entry(self.ventana)

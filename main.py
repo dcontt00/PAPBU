@@ -52,7 +52,7 @@ crear_plantilla_ventana = crear_plantilla.CrearPlantilla()
 ventana.title("Abrir Archivo")
 ventana.geometry("600x600")
 
-tk.Label(ventana, text="Selecciona un archivo para abrirlo:").pack()
+tk.Label(ventana, text="Seleccione el archivo input-forms.xml para abrirlo:").pack()
 
 # Filename entry
 entry = tk.Entry(ventana)

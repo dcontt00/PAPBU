@@ -1,6 +1,6 @@
 import tkinter as tk
 from bs4 import BeautifulSoup
-from tkinter import ttk
+from tkinter import ttk, messagebox
 
 input_types_dict = {
     "Campo de texto": "onebox",
@@ -61,6 +61,7 @@ class CrearPlantilla():
 
         # Dropdown values
         value_pairs_names = self.get_value_pairs_name_map()
+        print(value_pairs_names)
         label_value_pairs = tk.Label(top, text="Valores del desplegable")
         label_value_pairs.grid(row=3, column=2)
         value_pairs_name = tk.StringVar(top)
@@ -119,7 +120,6 @@ class CrearPlantilla():
                 "repetible": campo["repetible"].get()
             })
 
-        print(datos)
         with open(self.filename, 'r', encoding='utf-8') as file:
             content = file.read()
 
@@ -184,15 +184,16 @@ class CrearPlantilla():
         with open(self.filename, 'w', encoding='utf-8') as file:
             file.write(formatted_xml)
 
+        messagebox.showinfo("Plantilla creada", f"Se ha creado la plantilla {self.nombre_plantilla.get()}")
+
     def get_value_pairs_name_map(self):
         with open(self.filename, 'r', encoding='utf-8') as file:
             content = file.read()
         soup = BeautifulSoup(content, 'lxml-xml')
-        input_types = soup.find_all('input-type')
-        print(input_types)
-        value_pairs_names = [name_map.get('value-pairs-name') for name_map in input_types if
-                             name_map.text == "dropdown"]
+        input_types = soup.find_all('input-type', {'value-pairs-name': True})
+        value_pairs_names = [name_map.get('value-pairs-name') for name_map in input_types]
 
+        print(value_pairs_names)
         # Eliminar duplicados
         value_pairs_names = list(set(value_pairs_names))
         value_pairs_names.sort()
