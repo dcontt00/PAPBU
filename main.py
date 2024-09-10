@@ -4,6 +4,7 @@ import xml.etree.ElementTree as ET
 import buscar_plantilla
 import asignar_plantilla
 import crear_plantilla
+import listar_plantillas
 from tkinter import ttk
 
 root_element = None
@@ -38,9 +39,11 @@ def abrir_archivo():
         asignar_plantilla.pack()
         crear_plantilla.pack()
         modificar_plantilla.pack()
+        listar_plantillas.pack()
         buscar_plantilla_ventana.filename = filename
         asignar_plantilla_ventana.filename = filename
         crear_plantilla_ventana.filename = filename
+        listar_plantillas_ventana.filename = filename
 
 
 # Ventanas
@@ -48,6 +51,7 @@ ventana = tk.Tk()
 buscar_plantilla_ventana = buscar_plantilla.BuscarPlantilla()
 asignar_plantilla_ventana = asignar_plantilla.AsignarPlantilla()
 crear_plantilla_ventana = crear_plantilla.CrearPlantilla()
+listar_plantillas_ventana = listar_plantillas.ListarPlantillas()
 
 ventana.title("Abrir Archivo")
 ventana.geometry("600x600")
@@ -69,6 +73,8 @@ asignar_plantilla = tk.Button(ventana, text="Añadir plantilla a colección",
                               command=asignar_plantilla_ventana.inicializar_ventana)
 crear_plantilla = tk.Button(ventana, text="Crear plantilla", command=crear_plantilla_ventana.inicializar_ventana)
 modificar_plantilla = tk.Button(ventana, text="Modificar plantilla")
+
+listar_plantillas = tk.Button(ventana, text="Listar plantillas", command=listar_plantillas_ventana.inicializar_ventana)
 
 # Iniciar el bucle de la aplicación
 ventana.mainloop()
