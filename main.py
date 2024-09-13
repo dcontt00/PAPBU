@@ -5,7 +5,7 @@ import buscar_plantilla
 import asignar_plantilla
 import crear_plantilla
 import listar_plantillas
-from tkinter import ttk
+import os
 
 root_element = None
 
@@ -26,12 +26,32 @@ def obtener_form_name_por_collection_handle(filename, collection_handle):
     return None
 
 
-def abrir_archivo():
-    filename = filedialog.askopenfilename(filetypes=[("XML files", "*.xml")])
-    if filename:
+def abrir_archivos():
+    filenames = filedialog.askopenfilenames(filetypes=[("XML files", "*.xml")])
+    required_files = {'input-forms.xml', 'input-forms-integraciones.xml', 'item-submission.xml'}
+    selected_files = {os.path.basename(file) for file in filenames}
+    print(filenames)
+
+    if required_files.issubset(selected_files):
+
+        # Asignar archivos a funciones
+        input_forms_file = None
+        input_forms_integraciones_file = None
+        item_submission_file = None
+
+        for file in filenames:
+            if os.path.basename(file) == 'input-forms.xml':
+                input_forms_file = file
+            elif os.path.basename(file) == 'input-forms-integraciones.xml':
+                input_forms_integraciones_file = file
+            elif os.path.basename(file) == 'item-submission.xml':
+                item_submission_file = file
+
+        files = [input_forms_file, input_forms_integraciones_file, item_submission_file]
+
         entry.config(state=tk.NORMAL)
         entry.delete(0, tk.END)
-        entry.insert(0, filename)
+        entry.insert(0, filenames)
         entry.config(state="readonly")
 
         # Mostrar los botones de opciones
@@ -40,10 +60,10 @@ def abrir_archivo():
         crear_plantilla.pack()
         modificar_plantilla.pack()
         listar_plantillas.pack()
-        buscar_plantilla_ventana.filename = filename
-        asignar_plantilla_ventana.filename = filename
-        crear_plantilla_ventana.filename = filename
-        listar_plantillas_ventana.filename = filename
+        buscar_plantilla_ventana.filename = filenames
+        asignar_plantilla_ventana.filename = filenames
+        crear_plantilla_ventana.filename = filenames
+        listar_plantillas_ventana.filename = filenames
 
 
 # Ventanas
@@ -56,7 +76,8 @@ listar_plantillas_ventana = listar_plantillas.ListarPlantillas()
 ventana.title("Abrir Archivo")
 ventana.geometry("600x600")
 
-tk.Label(ventana, text="Seleccione el archivo input-forms.xml para abrirlo:").pack()
+tk.Label(ventana,
+         text="Seleccione los archivos input-forms.xml, input-forms-integraciones.xml y item-submission.xml para abrirlos:").pack()
 
 # Filename entry
 entry = tk.Entry(ventana)
@@ -64,7 +85,7 @@ entry.config(state="readonly")
 entry.pack(fill="x")
 
 # Crear un botón para abrir el archivo
-boton_abrir = tk.Button(ventana, text="Abrir Archivo", command=abrir_archivo)
+boton_abrir = tk.Button(ventana, text="Abrir Archivos", command=abrir_archivos)
 boton_abrir.pack(pady=20)
 
 # Crear tres botones adicionales y ocultarlos inicialmente
