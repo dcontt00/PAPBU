@@ -33,13 +33,13 @@ class AsignarPlantilla():
         with open(self.filename, 'r', encoding='utf-8') as file:
             content = file.read()
         soup = BeautifulSoup(content, 'lxml-xml')
-        name_maps = soup.find_all('name-map')
-        form_names = [name_map.get('form-name') for name_map in name_maps]
+        name_maps = soup.find_all('form')
+        form_names = [name_map.get('name') for name_map in name_maps]
 
+        print(form_names)
         # Eliminar duplicados
         form_names = list(set(form_names))
         form_names.sort()
-
         return form_names
 
     def asignar_plantilla(self):
