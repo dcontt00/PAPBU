@@ -69,7 +69,7 @@ boton_abrir.pack(pady=20)
 
 # Crear tres botones adicionales y ocultarlos inicialmente
 buscar_plantilla = tk.Button(ventana, text="Buscar Plantilla", command=buscar_plantilla_ventana.inicializar_ventana)
-asignar_plantilla = tk.Button(ventana, text="Añadir plantilla a colección",
+asignar_plantilla = tk.Button(ventana, text="Asignar plantilla a colección",
                               command=asignar_plantilla_ventana.inicializar_ventana)
 crear_plantilla = tk.Button(ventana, text="Crear plantilla", command=crear_plantilla_ventana.inicializar_ventana)
 modificar_plantilla = tk.Button(ventana, text="Modificar plantilla")
