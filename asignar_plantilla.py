@@ -1,6 +1,7 @@
 import tkinter as tk
 from bs4 import BeautifulSoup
 from tkinter import messagebox
+from common import asignar_item_submission, asignar_input_forms_integraciones
 
 
 class AsignarPlantilla():
@@ -52,25 +53,6 @@ class AsignarPlantilla():
         form_names.sort()
         return form_names
 
-    def asignar_input_forms_integraciones(self):
-        with open(self.files[1], 'r', encoding='utf-8') as file:
-            content = file.read()
-
-        soup = BeautifulSoup(content, 'lxml-xml')
-        form_map = soup.find('form-map')
-        collection_handle = self.entry_collection_handle.get()
-
-        # Comprobar si existe un 'name-map' con el 'collection-handle' especificado
-        name_map = soup.find('name-map', {'collection-handle': collection_handle})
-        if not name_map:
-            new_name_map = soup.new_tag('name-map')
-            new_name_map['collection-handle'] = collection_handle
-            new_name_map['form-name'] = "crossref"
-            form_map.insert(0, new_name_map)
-
-            with open(self.files[1], 'w', encoding='utf-8') as file:
-                file.write(soup.prettify())
-
     def asignar_input_forms(self):
         with open(self.files[0], 'r', encoding='utf-8') as file:
             content = file.read()
@@ -103,36 +85,15 @@ class AsignarPlantilla():
             with open(self.files[0], 'w', encoding='utf-8') as file:
                 file.write(formatte_content)
 
-    def asignar_item_submission(self):
-        collection_handle = self.entry_collection_handle.get()
-
-        # Asignar la plantilla al archivo 'item_submission.xml'
-        with open(self.files[2], 'r', encoding='utf-8') as file:
-            content = file.read()
-
-        soup = BeautifulSoup(content, 'lxml-xml')
-        submission_map = soup.find('submission-map')
-
-        # Comprobar si existe un 'name-map' con el 'collection-handle' especificado
-        name_map = soup.find('name-map', {'collection-handle': collection_handle})
-        if not name_map:
-            file_name_map = soup.new_tag('name-map')
-            file_name_map['collection-handle'] = collection_handle
-            file_name_map['submission-name'] = "integraciones"
-
-            submission_map.insert(0, file_name_map)
-            with open(self.files[2], 'w', encoding='utf-8') as file:
-                file.write(soup.prettify())
-
     def asignar_plantilla(self):
         collection_handle = self.entry_collection_handle.get()
         self.asignar_input_forms()
 
         if self.archivos_checkbox_var.get() == 1:
-            self.asignar_item_submission()
+            asignar_item_submission(self.files[2], collection_handle)
 
         if self.doi_checkbox_var.get() == 1:
-            self.asignar_input_forms_integraciones()
+            asignar_input_forms_integraciones(self.files[1], collection_handle)
 
         messagebox.showinfo("Plantilla asignada",
                             f"Se ha asignado la plantilla {self.selected_form_name.get()} al 'collection-handle' {collection_handle}")
