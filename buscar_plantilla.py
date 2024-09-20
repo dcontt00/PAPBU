@@ -5,7 +5,7 @@ from tkinter import messagebox
 
 class BuscarPlantilla():
     ventana: tk.Toplevel
-    filename: str
+    files: list[str]
     entry_collection_handle: tk.Entry
 
     def __init__(self):
@@ -22,7 +22,7 @@ class BuscarPlantilla():
         boton_buscar.pack()
 
     def buscar_plantilla(self):
-        with open(self.filename, 'r', encoding='utf-8') as file:
+        with open(self.files[0], 'r', encoding='utf-8') as file:
             content = file.read()
 
         collection_handle = self.entry_collection_handle.get()

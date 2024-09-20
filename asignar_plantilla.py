@@ -6,7 +6,7 @@ from tkinter import messagebox
 class AsignarPlantilla():
     ventana: tk.Toplevel
     entry_collection_handle: tk.Entry
-    filename: str
+    files: list[str]
     selected_form_name: tk.StringVar
 
     def inicializar_ventana(self):
@@ -30,7 +30,7 @@ class AsignarPlantilla():
 
     def get_form_names(self):
         # Parsear el archivo XML
-        with open(self.filename, 'r', encoding='utf-8') as file:
+        with open(self.files[0], 'r', encoding='utf-8') as file:
             content = file.read()
         soup = BeautifulSoup(content, 'lxml-xml')
         name_maps = soup.find_all('form')
@@ -43,7 +43,7 @@ class AsignarPlantilla():
         return form_names
 
     def asignar_plantilla(self):
-        with open(self.filename, 'r', encoding='utf-8') as file:
+        with open(self.files[0], 'r', encoding='utf-8') as file:
             content = file.read()
 
         collection_handle = self.entry_collection_handle.get()
@@ -51,18 +51,28 @@ class AsignarPlantilla():
         soup = BeautifulSoup(content, 'lxml-xml')
         form_map = soup.find('form-map')
 
-        # Añadir un nuevo 'name-map' con el 'collection-handle' y 'form-name' especificados
-        new_name_map = soup.new_tag('name-map')
-        new_name_map['collection-handle'] = collection_handle
-        new_name_map['form-name'] = self.selected_form_name.get()
-        # Añadir al principio
-        form_map.insert(0, new_name_map)
+        # Comprobar si existe un 'name-map' con el 'collection-handle' especificado
+        name_map = soup.find('name-map', {'collection-handle': collection_handle})
+        if name_map:
+            print("existe")
+            name_map['form-name'] = self.selected_form_name.get()
+            with open(self.files[0], 'w', encoding='utf-8') as file:
+                file.write(soup.prettify())
 
-        # Formatear el contenido del archivo XML
-        formatte_content = soup.prettify()
+        else:
 
-        # Guardar los cambios en el archivo XML
-        with open(self.filename, 'w', encoding='utf-8') as file:
-            file.write(formatte_content)
+            # Añadir un nuevo 'name-map' con el 'collection-handle' y 'form-name' especificados
+            new_name_map = soup.new_tag('name-map')
+            new_name_map['collection-handle'] = collection_handle
+            new_name_map['form-name'] = self.selected_form_name.get()
+            # Añadir al principio
+            form_map.insert(0, new_name_map)
+
+            # Formatear el contenido del archivo XML
+            formatte_content = soup.prettify()
+
+            # Guardar los cambios en el archivo XML
+            with open(self.files[0], 'w', encoding='utf-8') as file:
+                file.write(formatte_content)
         messagebox.showinfo("Plantilla asignada",
                             f"Se ha asignado la plantilla {self.selected_form_name.get()} al 'collection-handle' {collection_handle}")

@@ -60,10 +60,10 @@ def abrir_archivos():
         crear_plantilla.pack()
         modificar_plantilla.pack()
         listar_plantillas.pack()
-        buscar_plantilla_ventana.filename = filenames
-        asignar_plantilla_ventana.filename = filenames
-        crear_plantilla_ventana.filename = filenames
-        listar_plantillas_ventana.filename = filenames
+        buscar_plantilla_ventana.files = files
+        asignar_plantilla_ventana.files = files
+        crear_plantilla_ventana.files = files
+        listar_plantillas_ventana.files = files
 
 
 # Ventanas

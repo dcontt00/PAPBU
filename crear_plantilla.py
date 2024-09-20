@@ -14,7 +14,7 @@ input_types_dict = {
 class CrearPlantilla():
     ventana: tk.Toplevel
     nombre_plantilla: tk.Entry
-    filename: str
+    files: list[str]
     campos: list
 
     def inicializar_ventana(self):
@@ -120,7 +120,7 @@ class CrearPlantilla():
                 "repetible": campo["repetible"].get()
             })
 
-        with open(self.filename, 'r', encoding='utf-8') as file:
+        with open(self.files[0], 'r', encoding='utf-8') as file:
             content = file.read()
 
         soup = BeautifulSoup(content, 'lxml-xml')
@@ -181,13 +181,13 @@ class CrearPlantilla():
         form_definitions.insert(0, form)
         formatted_xml = soup.prettify()
 
-        with open(self.filename, 'w', encoding='utf-8') as file:
+        with open(self.files[0], 'w', encoding='utf-8') as file:
             file.write(formatted_xml)
 
         messagebox.showinfo("Plantilla creada", f"Se ha creado la plantilla {self.nombre_plantilla.get()}")
 
     def get_value_pairs_name_map(self):
-        with open(self.filename, 'r', encoding='utf-8') as file:
+        with open(self.files[0], 'r', encoding='utf-8') as file:
             content = file.read()
         soup = BeautifulSoup(content, 'lxml-xml')
         input_types = soup.find_all('input-type', {'value-pairs-name': True})

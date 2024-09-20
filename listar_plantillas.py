@@ -5,7 +5,7 @@ from tkinter import messagebox
 
 class ListarPlantillas():
     ventana: tk.Toplevel
-    filename: str
+    files: list[str]
 
     def __init__(self):
         pass
@@ -22,7 +22,7 @@ class ListarPlantillas():
         listbox.pack(fill=tk.BOTH, expand=True)
 
     def listar(self):
-        with open(self.filename, 'r', encoding='utf-8') as file:
+        with open(self.files[0], 'r', encoding='utf-8') as file:
             content = file.read()
 
         soup = BeautifulSoup(content, 'lxml-xml')
