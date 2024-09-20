@@ -1,4 +1,6 @@
 import tkinter as tk
+from idlelib.iomenu import encoding
+
 from bs4 import BeautifulSoup
 from tkinter import messagebox
 
@@ -42,12 +44,11 @@ class AsignarPlantilla():
         form_names.sort()
         return form_names
 
-    def asignar_plantilla(self):
+    def asignar_input_forms(self):
         with open(self.files[0], 'r', encoding='utf-8') as file:
             content = file.read()
 
         collection_handle = self.entry_collection_handle.get()
-        print(collection_handle)
         soup = BeautifulSoup(content, 'lxml-xml')
         form_map = soup.find('form-map')
 
@@ -74,5 +75,31 @@ class AsignarPlantilla():
             # Guardar los cambios en el archivo XML
             with open(self.files[0], 'w', encoding='utf-8') as file:
                 file.write(formatte_content)
+
+    def asignar_input_forms_integraciones(self):
+        collection_handle = self.entry_collection_handle.get()
+
+        # Asignar la plantilla al archivo 'input-forms-integraciones.xml'
+        with open(self.files[2], 'r', encoding='utf-8') as file:
+            content = file.read()
+
+        soup = BeautifulSoup(content, 'lxml-xml')
+        submission_map = soup.find('submission-map')
+
+        # Comprobar si existe un 'name-map' con el 'collection-handle' especificado
+        name_map = soup.find('name-map', {'collection-handle': collection_handle})
+        if not name_map:
+            file_name_map = soup.new_tag('name-map')
+            file_name_map['collection-handle'] = collection_handle
+            file_name_map['submission-name'] = "integraciones"
+
+            submission_map.insert(0, file_name_map)
+            with open(self.files[2], 'w', encoding='utf-8') as file:
+                file.write(soup.prettify())
+
+    def asignar_plantilla(self):
+        collection_handle = self.entry_collection_handle.get()
+        self.asignar_input_forms()
+        self.asignar_input_forms_integraciones()
         messagebox.showinfo("Plantilla asignada",
                             f"Se ha asignado la plantilla {self.selected_form_name.get()} al 'collection-handle' {collection_handle}")
