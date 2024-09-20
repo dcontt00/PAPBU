@@ -5,6 +5,7 @@ import buscar_plantilla
 import asignar_plantilla
 import crear_plantilla
 import listar_plantillas
+import modificar_plantilla
 import os
 
 root_element = None
@@ -60,10 +61,13 @@ def abrir_archivos():
         crear_plantilla.pack()
         modificar_plantilla.pack()
         listar_plantillas.pack()
+
+        # Asignar archivos a las ventanas
         buscar_plantilla_ventana.files = files
         asignar_plantilla_ventana.files = files
         crear_plantilla_ventana.files = files
         listar_plantillas_ventana.files = files
+        modificar_plantilla_ventana.files = files
 
 
 # Ventanas
@@ -72,6 +76,7 @@ buscar_plantilla_ventana = buscar_plantilla.BuscarPlantilla()
 asignar_plantilla_ventana = asignar_plantilla.AsignarPlantilla()
 crear_plantilla_ventana = crear_plantilla.CrearPlantilla()
 listar_plantillas_ventana = listar_plantillas.ListarPlantillas()
+modificar_plantilla_ventana = modificar_plantilla.ModificarPlantilla()
 
 ventana.title("Abrir Archivo")
 ventana.geometry("600x600")
@@ -96,6 +101,8 @@ crear_plantilla = tk.Button(ventana, text="Crear plantilla", command=crear_plant
 modificar_plantilla = tk.Button(ventana, text="Modificar plantilla")
 
 listar_plantillas = tk.Button(ventana, text="Listar plantillas", command=listar_plantillas_ventana.inicializar_ventana)
+modificar_plantilla = tk.Button(ventana, text="Modificar plantilla",
+                                command=modificar_plantilla_ventana.inicializar_ventana)
 
 # Iniciar el bucle de la aplicación
 ventana.mainloop()
