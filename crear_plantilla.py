@@ -153,6 +153,9 @@ class CrearPlantilla():
                 dc_qualifier = soup.new_tag('dc-qualifier')
                 dc_qualifier.string = metadato_partes[2]
                 field.append(dc_qualifier)
+            else:  # Añadir tag vacío
+                dc_qualifier = soup.new_tag('dc-qualifier')
+                field.append(dc_qualifier)
 
             repeatable = soup.new_tag('repeatable')
             repeatable.string = str(x['repetible'])
