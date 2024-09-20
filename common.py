@@ -38,3 +38,16 @@ def asignar_input_forms_integraciones(input_forms_integraciones_file: str, colle
 
         with open(input_forms_integraciones_file, 'w', encoding='utf-8') as file:
             file.write(soup.prettify())
+
+
+def get_form_names(file: str):
+    with open(file, 'r', encoding='utf-8') as file:
+        content = file.read()
+
+    soup = BeautifulSoup(content, 'lxml-xml')
+    forms = soup.find_all('form')
+
+    # Get attribute name from form tag
+    form_names = [name_map.get('name') for name_map in forms]
+
+    return form_names
