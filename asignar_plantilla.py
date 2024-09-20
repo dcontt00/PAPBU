@@ -1,6 +1,4 @@
 import tkinter as tk
-from idlelib.iomenu import encoding
-
 from bs4 import BeautifulSoup
 from tkinter import messagebox
 
@@ -27,6 +25,16 @@ class AsignarPlantilla():
         dropdown = tk.OptionMenu(self.ventana, self.selected_form_name, *form_names)
         dropdown.pack()
 
+        # Checkbox para DOI
+        self.doi_checkbox_var = tk.IntVar()
+        doi_checkbox = tk.Checkbutton(self.ventana, text="Autocompletar con DOI", variable=self.doi_checkbox_var)
+        doi_checkbox.pack()
+
+        # Checkbox para subir archivos
+        self.archivos_checkbox_var = tk.IntVar()
+        archivos_checkbox = tk.Checkbutton(self.ventana, text="Subida de Archivos", variable=self.archivos_checkbox_var)
+        archivos_checkbox.pack()
+
         boton_asignar = tk.Button(self.ventana, text="Asignar", command=self.asignar_plantilla)
         boton_asignar.pack()
 
@@ -43,6 +51,25 @@ class AsignarPlantilla():
         form_names = list(set(form_names))
         form_names.sort()
         return form_names
+
+    def asignar_input_forms_integraciones(self):
+        with open(self.files[1], 'r', encoding='utf-8') as file:
+            content = file.read()
+
+        soup = BeautifulSoup(content, 'lxml-xml')
+        form_map = soup.find('form-map')
+        collection_handle = self.entry_collection_handle.get()
+
+        # Comprobar si existe un 'name-map' con el 'collection-handle' especificado
+        name_map = soup.find('name-map', {'collection-handle': collection_handle})
+        if not name_map:
+            new_name_map = soup.new_tag('name-map')
+            new_name_map['collection-handle'] = collection_handle
+            new_name_map['form-name'] = "crossref"
+            form_map.insert(0, new_name_map)
+
+            with open(self.files[1], 'w', encoding='utf-8') as file:
+                file.write(soup.prettify())
 
     def asignar_input_forms(self):
         with open(self.files[0], 'r', encoding='utf-8') as file:
@@ -76,10 +103,10 @@ class AsignarPlantilla():
             with open(self.files[0], 'w', encoding='utf-8') as file:
                 file.write(formatte_content)
 
-    def asignar_input_forms_integraciones(self):
+    def asignar_item_submission(self):
         collection_handle = self.entry_collection_handle.get()
 
-        # Asignar la plantilla al archivo 'input-forms-integraciones.xml'
+        # Asignar la plantilla al archivo 'item_submission.xml'
         with open(self.files[2], 'r', encoding='utf-8') as file:
             content = file.read()
 
@@ -100,6 +127,12 @@ class AsignarPlantilla():
     def asignar_plantilla(self):
         collection_handle = self.entry_collection_handle.get()
         self.asignar_input_forms()
-        self.asignar_input_forms_integraciones()
+
+        if self.archivos_checkbox_var.get() == 1:
+            self.asignar_item_submission()
+
+        if self.doi_checkbox_var.get() == 1:
+            self.asignar_input_forms_integraciones()
+
         messagebox.showinfo("Plantilla asignada",
                             f"Se ha asignado la plantilla {self.selected_form_name.get()} al 'collection-handle' {collection_handle}")
